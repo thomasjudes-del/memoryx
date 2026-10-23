@@ -21,8 +21,10 @@ jobs:
       - name: Validate demo and stage public files only
         run: |
           node -e "const fs=require('fs');const s=fs.readFileSync('index.html','utf8');for(const m of s.matchAll(/<script[^>]*>([\\s\\S]*?)<\\/script>/g))new Function(m[1]);console.log('JavaScript parse OK')"
-          mkdir -p _site
+          node tests/mixed-session.test.cjs
+          mkdir -p _site/tests
           cp index.html _site/index.html
+          cp tests/responsive.html _site/tests/responsive.html
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
         with:
