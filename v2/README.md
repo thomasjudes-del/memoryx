@@ -1,26 +1,29 @@
 # MemoryX v2
 
-Public demo: https://thomasjudes-del.github.io/memoryx/v2/
+Public app: https://thomasjudes-del.github.io/memoryx/v2/
 
-Timeline-first, mobile browser interface. No build tools or external services are required. Serve this directory with any static web server. The original demo remains at the repository root.
+Static, mobile-first timeline hosted on GitHub Pages. No MemoryX account or paid API required. The original prototype remains at the repository root.
 
-## Files
+## Experience
 
-- `app.js`: views, interaction and browser storage.
-- `model.js`: date precision, examples, filters, recall questions and validated import.
-- `styles.css` and `modern.css`: base layout and the current visual treatment.
-- `assets/`: two generated fictional example photographs and the icon.
+Birth-date onboarding; visual calendar with direct month/year selection; exact and approximate dates; narrative or manual entry; optional browser dictation; optional local text AI and audio transcription; photo, ICS calendar and text/email imports. Every proposed event is reviewed before saving.
 
-Run `npm test` from the repository root. GitHub Actions also checks the original demo before publishing both versions.
+Photos are selected by the person through the phone picker. JPEG capture date and GPS are read when supplied. Missing metadata remains unknown. A website cannot scan the entire Apple Photos library. HEIC support depends on browser decoding; JPEG is the fallback.
 
-## Data
+Share an individual memory as a self-contained URL, or a JSON file including its photo. A recipient can prepare a return link; the author explicitly accepts the testimony. No messaging is sent by MemoryX. Links are bearer copies, not authenticated identities, and cannot be revoked. Full-history JSON export/import and calendar reminder ICS downloads are available.
 
-The two spaces, example and personal history, are isolated under `memoryx-public-v2` in localStorage. The previous demo's storage is not read or modified. JSON export/import provides manual portability. No API calls, analytics, account creation or external fonts are used.
+## Local storage and models
 
-Sharing the application link shares no stored memories. AI sources, friend invitations and replies are interactive previews with no outbound messaging. Their conditions are centralized under the header information button. The data management screen provides export, import, trash and reset.
+Example and personal spaces are isolated in localStorage under `memoryx-public-v2`. JSON export is the backup; clearing browser data removes local history. No server sync, analytics or paid inference backend.
 
-The timeline keeps uncertain dates as intervals. A month is not converted to an exact day. Unknown dates stay separate. Recall uses confirmed fields only; source suggestions and contributions keep their provenance and hypothesis status.
+Fast narrative organization is deterministic extraction. Optional AI uses Transformers.js 3.7.2, Qwen2.5-0.5B-Instruct q4 and Whisper tiny q8 in a worker. Models download from Hugging Face and dependencies from jsDelivr on explicit activation; inference then runs on the device. Download size, memory and speed depend on the device. Browser dictation is separate and may use the browser vendor's remote speech service.
 
-## QA
+Google Calendar/Gmail direct OAuth code requires an owner-configured Google client ID, allowed origins, enabled APIs and relevant Google consent/verification. It is not preconfigured in this deployment. File imports need none of this. Existing ChatGPT connector permissions do not transfer to this website.
 
-Checked at 320 px, 390 px and desktop: first timeline display, adding and editing, month selection, reload persistence, the mixed recall/exploration session and centralized conditions. Model tests cover date precision, invalid dates, import validation, category/date filtering and incomplete editor dates.
+## Code and verification
+
+`app.js` handles views/storage; `model.js` handles dates and validation; `intake.js` handles imports and share packets; `experience.js` handles onboarding, capture and sharing; `local-ai.js` runs optional models. CSS is split across base, modern and experience styles.
+
+Run `npm test` and `node tests/mixed-session.test.cjs`. GitHub Actions checks scripts and tests before publication.
+
+Browser QA covered 320/390 px layouts, onboarding, calendar, narrative review, manual edit, JPEG EXIF import, ICS import, memory/reply links and testimony acceptance. Local text inference and Whisper transcription ran in Chromium. Physical iPhone performance, Safari microphone behavior and live Google OAuth have not been verified.
